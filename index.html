@@ -52,12 +52,12 @@
     pointer-events: none;
   }
 
-  /* winieta – ściemnienie rogów jak przy odbitce drzeworytu */
+  /* winieta – miękkie ściemnienie krawędzi */
   .vignette {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(ellipse 80% 75% at 50% 50%, transparent 35%, rgba(0,0,0,.8) 100%);
+    background: radial-gradient(ellipse 80% 75% at 50% 50%, transparent 40%, rgba(0,0,0,.75) 100%);
   }
 
   .mark {
@@ -77,63 +77,46 @@
 
     <svg class="paper" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <!-- 1. plamy / starzenie: duże mgliste nierówności jak na starym washi -->
+        <!-- 1. plamy starzenia: miękkie, mgliste przebarwienia jak na starym pergaminie -->
         <filter id="mottle" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="0.0035" numOctaves="4" seed="3"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.0028" numOctaves="5" seed="3"/>
           <feColorMatrix type="saturate" values="0"/>
           <feComponentTransfer>
-            <feFuncR type="table" tableValues="0 0 0.06 0.30 0.95"/>
-            <feFuncG type="table" tableValues="0 0 0.05 0.25 0.82"/>
-            <feFuncB type="table" tableValues="0 0 0.03 0.17 0.60"/>
+            <feFuncR type="table" tableValues="0 0 0.05 0.28 0.90"/>
+            <feFuncG type="table" tableValues="0 0 0.04 0.23 0.76"/>
+            <feFuncB type="table" tableValues="0 0 0.02 0.14 0.52"/>
             <feFuncA type="linear" slope="0" intercept="1"/>
           </feComponentTransfer>
         </filter>
 
-        <!-- 2. włókna: poziome smugi jak włókna morwy w papierze japońskim -->
-        <filter id="fiber" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="0.005 0.55" numOctaves="2" seed="11"/>
+        <!-- 2. żyłki / zagniecenia: nieregularna struktura włókien papirusu -->
+        <filter id="veins" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+          <feTurbulence type="turbulence" baseFrequency="0.011" numOctaves="3" seed="21"/>
           <feColorMatrix type="saturate" values="0"/>
           <feComponentTransfer>
-            <feFuncR type="table" tableValues="0 0 0 0.18 0.95"/>
-            <feFuncG type="table" tableValues="0 0 0 0.15 0.85"/>
-            <feFuncB type="table" tableValues="0 0 0 0.10 0.65"/>
+            <feFuncR type="table" tableValues="0 0 0 0.10 0.55 1"/>
+            <feFuncG type="table" tableValues="0 0 0 0.08 0.46 0.86"/>
+            <feFuncB type="table" tableValues="0 0 0 0.05 0.30 0.60"/>
             <feFuncA type="linear" slope="0" intercept="1"/>
           </feComponentTransfer>
         </filter>
 
-        <!-- 3. ziarno: drobny szum papieru -->
+        <!-- 3. ziarno: drobna faktura papieru -->
         <filter id="grain" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="5"/>
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" seed="5"/>
           <feColorMatrix type="saturate" values="0"/>
           <feComponentTransfer>
-            <feFuncR type="table" tableValues="0 0 0.08 0.45 1"/>
-            <feFuncG type="table" tableValues="0 0 0.07 0.40 0.9"/>
-            <feFuncB type="table" tableValues="0 0 0.05 0.30 0.7"/>
+            <feFuncR type="table" tableValues="0 0 0.06 0.40 1"/>
+            <feFuncG type="table" tableValues="0 0 0.05 0.34 0.86"/>
+            <feFuncB type="table" tableValues="0 0 0.03 0.24 0.62"/>
             <feFuncA type="linear" slope="0" intercept="1"/>
           </feComponentTransfer>
         </filter>
-
-        <!-- 4. szrafowanie ryciny: skośne, lekko drżące linie, tylko przy krawędziach -->
-        <pattern id="hatchP" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-32)">
-          <rect width="5" height="1" fill="#f3e6d2"/>
-        </pattern>
-        <filter id="wobble" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-          <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="9" result="n"/>
-          <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
-        <radialGradient id="edgeG" cx="50%" cy="50%" r="60%" fx="50%" fy="50%">
-          <stop offset="30%" stop-color="#000"/>
-          <stop offset="100%" stop-color="#fff"/>
-        </radialGradient>
-        <mask id="edgeM" maskContentUnits="userSpaceOnUse">
-          <rect width="100%" height="100%" fill="url(#edgeG)"/>
-        </mask>
       </defs>
 
-      <rect width="100%" height="100%" filter="url(#mottle)" opacity="0.55"/>
-      <rect width="100%" height="100%" filter="url(#fiber)"  opacity="0.32"/>
-      <rect width="100%" height="100%" filter="url(#grain)"  opacity="0.16"/>
-      <rect width="100%" height="100%" fill="url(#hatchP)" filter="url(#wobble)" mask="url(#edgeM)" opacity="0.085"/>
+      <rect width="100%" height="100%" filter="url(#mottle)" opacity="0.52"/>
+      <rect width="100%" height="100%" filter="url(#veins)"  opacity="0.26"/>
+      <rect width="100%" height="100%" filter="url(#grain)"  opacity="0.14"/>
     </svg>
 
     <div class="vignette" aria-hidden="true"></div>
